@@ -1,8 +1,14 @@
 [
   {
+    "title":"Easy Numbers",
+    "contentUrl":"resources/blogs/easy-numbers",
+    "date":"2021-12-17",
+    "tags":["new"]
+  },
+  {
     "title":"Hello World",
-    "filename":"hello-world.html",
-    "date":"2021-01-01",
+    "contentUrl":"resources/blogs/hello-world",
+    "date":"2021-12-17",
     "tags":["new"]
   }
 ]

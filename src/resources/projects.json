@@ -1,13 +1,13 @@
 [
+  {
+    "projectTitle":"32-bit Kernel",
+    "projectImage":"resources/images/32_bit.png",
+    "projectDescription":"A 32-bit Linux-Like Kernel built entirely from scratch. This admittedly simplistic kernel features a writeable filesystem, dynamic memory allocation, and UDP networking capabilities."
+  },
   { 
     "projectTitle":"FPGA Galaga",
     "projectImage":"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    "projectDescription":"I forgot what I put whoops"
-  },
-  {
-    "projectTitle":"32-bit Kernel",
-    "projectImage":"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    "projectDescription":"Linux best OS"
+    "projectDescription":"A VGA recreation of the classic arcade game Galaga for the FPGA built using SystemVerilog."
   }
 ]
 
