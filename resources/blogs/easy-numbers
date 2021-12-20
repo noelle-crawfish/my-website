@@ -1,0 +1,39 @@
+<p>A little over a month ago, I wrote a crypto challenge called Easy Numbers for the annual SIGPwny Recruitment CTF. For a lot of non-Math people, crypto seems like a scary thing to get into since it relies so heavily on number theory. I wrote this with the hopes of proving that numbers are a lot less intimidating than they seem.</p>
+
+<div class='code-block'>
+<code>
+I found a flag for the recruitment CTF, and I wanted to tell my 4 best friends about it without letting anyone else in on the secret. I sent it to each of them seperately after encrypting it with their public RSA keys. I think it should be secure.
+
+https://en.wikipedia.org/wiki/Chinese_remainder_theorem
+
+{e = 13, N = 54807260397984682112220851273205941641164486174061986957182261835248948275775337970952360552139302052120019326970551300495528793628284900992580645882314492870313108857249655865521070659455454514904423648303598220093557489145167943145297095842519964623798461873630493234854989995623757235851560468515294255449, ct = 41030698988869812419127886674061237922760213108967358474607378430529387319951637210276187262301730754038462677663615788930679748409723821952175773384411418067421930884340169178515432814967050775978304318018633411067243416053326065136734363295369768161993169551222616263989829768335408003056625734615675144497}
+{e = 13, N = 157855061366534996168357762640481601321139023011655463895166095665758336556932499607467122691878045198517533125789279021470597367743009047235702791591756228968871375835367545661829595218834125976555685761531408463441656622857648450463459987126173590291838538041247864875252167457600686429213668586241679883753, ct = 111165003025729965359335698405006797997931441297892726121899734500001440340999016176218224398104635646157778961997694817168778543420812701076230726556284105407461127380083575690688155386634769677346557484491613238928067896627653663890785997040872113594821836287934189726343219725231934038742122001817626210364}
+{e = 13, N = 85078530132618178630720593997690886072664062950014979587215627290804001288664990010008662828424066001914241611548838533320454512764024736095782906151327552575469407246317956811927905624664034848977734574678732353608544275713043902028274899737553443547781018233796600973666719390598216841047198608707529788909, ct = 19489154337840134076951485479230859052868978667810329446489092203370997073056577642994905233502762063105704000436786427344201113619398731816888069725153812481024910656338093895354625886059939662960627577176553958815023457828950499354778108698488325064139695719461286686279952205236340154614646361859650944679}
+{e = 13, N = 83942470223979952402408605905780518576730526049309975209757224901258268282987211546663376121054125344682860369280797093065552822158029943363795653245551474541975540142333307161028387813896334941114271511061880136315233082405834175304767599562764687855753452348533620236630453858924517884165367698045844546473, ct = 38023538747598781518285096146227862644299320224797062342315330999805207023424172039438083303520082004045985802925189118302014775490633232015188923386537109435817809945066116279707799257812849050727636787993193846196384847327232902986778218188077168856887128788247054278870969292314344916812919681968311809947}
+</code>
+</div>
+<p>So how does one make sense of these seemingly random numbers?</p>
+
+<h4>What is RSA?</h4>
+<p>RSA is a widely used asymmetric encryption method with a lot of problems. There are lots of great resources explaining exactly how it works (like the one <a href='#'>here</a>), but as a quick refresher, recall secrets are encrypted by computing ct = pt**e (mod N) with the recipients public key (e) and public modulus (N), and then decrypted by computing pt = ct**d (mod N) with the recipients private key (d). The important thing to remember for this challenge is that the security of RSA hinges on the hardness of two things: factoring large numbers, and taking discrete roots.</p>
+
+<h4>If we can't factor N and we can't take a discrete root, how do we break this?</h4>
+<p>Taking discrete roots is hard because there is no good way to limit our search space. Consider the example 4**2 = 16, and 4**2 = 1 (mod 15).  Traditional methods to solve the non-discrete root would involve a binary search of the range (0, 16/2) to narrow in on the square root. However, the ‘wraparound’ that occurs in modular arithmetic makes it difficult to approximate the magnitude of the root for the discrete case. Therefore, we need to be a bit creative. Since it is known that the plaintext is represented by an integer, taking the non-discrete root of pt**e is the equivalent of the limit of pt**e (mod N) as N approaches infinity. So if there were some way to rewrite the system of congruences given to us as even a single congruence modulo a much larger N, we could recover the plaintext by ignoring the ‘discreteness’ of the eth-root (ex. 4**2 = 16 (mod 200)).</p>
+
+<h4>The Chinese Remainder Theorem</h4>
+<p>The Chinese Remainder Theorem is an algorithm that allows us to solve a system of congruences where each congruence is modulo a distinct coprime value. I linked a wikipedia article in the problem statement with a pretty good explanation of how it works, but the key insight for us is that the modulus of the solution congruence is N = N1 * N2 * … Nk, where N1, N2, …, Nk are the modulus of your original equations. Our original moduli are BIG, so when multiplied together, the result should be enormous enough that we can approximate our discrete log as a non-discrete one.</p>
+
+<h4>Solve Script</h4>
+<p>We can write a Sage program to recover the plaintext.</p>
+<div class='code-block'>
+<code>
+ct = [array of ct]
+N = [array of N]
+
+x = crt(ct, N)
+x = x.nth_root(e)
+print(bytes.fromhex(hex(x)[2:]))
+
+>>> sigpwny{numbers_are_fun}
+</code>
+</div>
