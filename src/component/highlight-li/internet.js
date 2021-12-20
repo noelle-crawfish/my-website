@@ -8,7 +8,7 @@ export default class Internet extends Component {
       <div className='highlight-li'>
         <h4>Fun Places on the Interweb</h4>
         <ol>
-          <li><a href='https://wiki.osdev.org/Expanded_Main_Page'>OSDev</a></li>
+          <li><a href='https://wiki.osdev.org/Expanded_Main_Page' target='_blank'>OSDev</a></li>
           <li><a href='https://www.reddit.com/r/cardistry/' target='_blank'>r/Cardistry</a></li>
           <li><a href='https://cryptohack.org/' target='_blank'>Crypohack</a></li>
           <li><a href='https://www.reddit.com/r/unixporn/' target='_blank'>Unixporn</a></li>
