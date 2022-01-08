@@ -6,8 +6,8 @@
     "tags":["new"]
   },
   {
-    "title":"Hello World",
-    "contentUrl":"resources/blogs/hello-world",
+    "title":"Shamir's Secret Sharing Algorithm",
+    "contentUrl":"resources/blogs/shamirs-secrets",
     "date":"2021-12-17",
     "tags":["new"]
   }
